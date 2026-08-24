@@ -32,6 +32,7 @@ namespace Setting
     extern const SettingsBool enable_join_runtime_filters_index_analysis;
     extern const SettingsBool force_optimize_projection;
     extern const SettingsBool make_distributed_plan;
+    extern const SettingsBool distributed_plan_fallback_to_local_execution;
     extern const SettingsBool distributed_plan_execute_locally;
     extern const SettingsBool optimize_aggregation_in_order;
     extern const SettingsBool optimize_distinct_in_order;
@@ -264,7 +265,7 @@ QueryPlanOptimizationSettings::QueryPlanOptimizationSettings(
         force_use_projection = false;
         force_projection_name = {};
     }
-
+    distributed_plan_fallback_to_local_execution = from[Setting::distributed_plan_fallback_to_local_execution];
     distributed_plan_execute_locally = from[Setting::distributed_plan_execute_locally];
     distributed_plan_default_shuffle_join_bucket_count = from[Setting::distributed_plan_default_shuffle_join_bucket_count];
     distributed_plan_default_reader_bucket_count = from[Setting::distributed_plan_default_reader_bucket_count];
