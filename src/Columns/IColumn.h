@@ -404,6 +404,8 @@ public:
     /// equivalent data stored differently in memory (e.g. different dynamic/shared path layout
     /// in ColumnObject, or different variant layout in ColumnDynamic).
     /// ColumnSparse needs no override: insert deduplication removes sparse representation before hashing.
+    /// ColumnReplicated must not get one either: the row-wise default is what keeps the block id of a
+    /// retried insert stable when a merge flips whether the plan replicates the column lazily.
     /// Default implementation calls updateHashWithValue for each element.
     virtual void updateHashWithValueRange(size_t begin, size_t end, SipHash & hash) const;
 
