@@ -580,6 +580,9 @@ if "max_ignored_relative_change" in root.attrib:
     ignored_relative_change = float(root.attrib["max_ignored_relative_change"])
     print(f"report-threshold\t{ignored_relative_change}")
 
+# Opt-in per test: profile every query, not only those whose timings changed.
+profile_all_queries = root.attrib.get("profile_all_queries", "0") == "1"
+
 reportStageEnd("before-connect")
 
 # Open connections
@@ -1063,7 +1066,9 @@ for query_index in queries_to_run:
     # difference we use in report (max(median) / min(median)).
     relative_diff = (median[1] - median[0]) / median[0]
     print(f"diff\t{query_index}\t{median[0]}\t{median[1]}\t{relative_diff}\t{pvalue}")
-    if abs(relative_diff) < ignored_relative_change or pvalue > 0.05:
+    if not profile_all_queries and (
+        abs(relative_diff) < ignored_relative_change or pvalue > 0.05
+    ):
         continue
 
     if q_item["kind"] == "shell":
